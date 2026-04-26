@@ -10,9 +10,9 @@
     <main class="popup">
       <header class="hero">
         <div class="hero-row">
-          <div>
+          <div class="title-block">
             <h1>Focus Filter</h1>
-            <p class="summary">Quiet utility for social media.</p>
+            <p class="summary">More focus, less drift.</p>
           </div>
           <div class="theme-switch" aria-label="Appearance">
             <button class="theme-chip" data-theme="auto" type="button">Auto</button>
@@ -25,23 +25,17 @@
       <section class="mode-list" aria-label="Protection modes">
         <button class="mode-card" data-mode="off" type="button">
           <span class="mode-name">Off</span>
-          <span class="mode-copy">Show everything normally.</span>
         </button>
         <button class="mode-card" data-mode="shorts" type="button">
           <span class="mode-name">Shorts Only</span>
-          <span class="mode-copy">Hide reels, shorts, and video rails.</span>
         </button>
         <button class="mode-card" data-mode="feed" type="button">
           <span class="mode-name">Feed Block</span>
-          <span class="mode-copy">Keep utility, remove the main feed.</span>
         </button>
         <button class="mode-card" data-mode="search" type="button">
           <span class="mode-name">Search Only</span>
-          <span class="mode-copy">Keep search, strip away discovery.</span>
         </button>
       </section>
-
-      <p class="status" id="status" aria-live="polite"></p>
     </main>
 
     <script src="popup.js"></script>
