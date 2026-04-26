@@ -1,0 +1,76 @@
+{
+  "manifest_version": 3,
+  "name": "Minimalist Shield",
+  "version": "0.1.0",
+  "description": "Hide feeds, shorts, and other discovery surfaces on social media sites.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://youtube.com/*",
+    "https://www.instagram.com/*",
+    "https://instagram.com/*",
+    "https://www.facebook.com/*",
+    "https://facebook.com/*",
+    "https://x.com/*",
+    "https://www.x.com/*",
+    "https://twitter.com/*",
+    "https://www.twitter.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Minimalist Shield",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*",
+        "https://youtube.com/*"
+      ],
+      "js": [
+        "content/shared/core.js",
+        "content/sites/youtube.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.instagram.com/*",
+        "https://instagram.com/*"
+      ],
+      "js": [
+        "content/shared/core.js",
+        "content/sites/instagram.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.facebook.com/*",
+        "https://facebook.com/*"
+      ],
+      "js": [
+        "content/shared/core.js",
+        "content/sites/facebook.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://x.com/*",
+        "https://www.x.com/*",
+        "https://twitter.com/*",
+        "https://www.twitter.com/*"
+      ],
+      "js": [
+        "content/shared/core.js",
+        "content/sites/x.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}
