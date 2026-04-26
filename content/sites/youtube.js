@@ -9,24 +9,30 @@
   const SHORTS_PLACEHOLDER_ID = "ms-youtube-shorts-placeholder";
 
   const css = `
-    html[data-ms-site="youtube"][data-ms-mode="shorts"] a[href^="/shorts"],
-    html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-guide-entry-renderer:has(a[href^="/shorts"]),
-    html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-mini-guide-entry-renderer:has(a[href^="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="shorts"] a[href*="/shorts"],
+    html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-guide-entry-renderer:has(a[href*="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-mini-guide-entry-renderer:has(a[href*="/shorts"]),
     html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-reel-shelf-renderer,
-    html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-rich-shelf-renderer:has(a[href^="/shorts"]),
-    html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-video-renderer:has(a[href^="/shorts"]),
-    html[data-ms-site="youtube"][data-ms-mode="feed"] a[href^="/shorts"],
-    html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-guide-entry-renderer:has(a[href^="/shorts"]),
-    html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-mini-guide-entry-renderer:has(a[href^="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-rich-shelf-renderer:has(a[href*="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="shorts"] ytd-video-renderer:has(a[href*="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="feed"] a[href*="/shorts"],
+    html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-guide-entry-renderer:has(a[href*="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-mini-guide-entry-renderer:has(a[href*="/shorts"]),
     html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-reel-shelf-renderer,
-    html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-rich-shelf-renderer:has(a[href^="/shorts"]),
-    html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-video-renderer:has(a[href^="/shorts"]),
-    html[data-ms-site="youtube"][data-ms-mode="search"] a[href^="/shorts"],
-    html[data-ms-site="youtube"][data-ms-mode="search"] ytd-guide-entry-renderer:has(a[href^="/shorts"]),
-    html[data-ms-site="youtube"][data-ms-mode="search"] ytd-mini-guide-entry-renderer:has(a[href^="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-rich-shelf-renderer:has(a[href*="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="feed"] ytd-video-renderer:has(a[href*="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="search"] a[href*="/shorts"],
+    html[data-ms-site="youtube"][data-ms-mode="search"] ytd-guide-entry-renderer:has(a[href*="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="search"] ytd-mini-guide-entry-renderer:has(a[href*="/shorts"]),
     html[data-ms-site="youtube"][data-ms-mode="search"] ytd-reel-shelf-renderer,
-    html[data-ms-site="youtube"][data-ms-mode="search"] ytd-rich-shelf-renderer:has(a[href^="/shorts"]),
-    html[data-ms-site="youtube"][data-ms-mode="search"] ytd-video-renderer:has(a[href^="/shorts"]) {
+    html[data-ms-site="youtube"][data-ms-mode="search"] ytd-rich-shelf-renderer:has(a[href*="/shorts"]),
+    html[data-ms-site="youtube"][data-ms-mode="search"] ytd-video-renderer:has(a[href*="/shorts"]) {
+      display: none !important;
+    }
+
+    html[data-ms-site="youtube"][data-ms-mode="shorts"][data-ms-youtube-route="search-results"] ytd-item-section-renderer:has(ytd-reel-shelf-renderer),
+    html[data-ms-site="youtube"][data-ms-mode="feed"][data-ms-youtube-route="search-results"] ytd-item-section-renderer:has(ytd-reel-shelf-renderer),
+    html[data-ms-site="youtube"][data-ms-mode="search"][data-ms-youtube-route="search-results"] ytd-item-section-renderer:has(ytd-reel-shelf-renderer) {
       display: none !important;
     }
 
@@ -169,13 +175,97 @@
     });
   }
 
+  function isShortsSearchSection(section) {
+    if (!section) {
+      return false;
+    }
+
+    const normalizedLabel = (
+      section.querySelector("#title")?.textContent ||
+      section.querySelector("h2")?.textContent ||
+      section.querySelector('[aria-label="Shorts"]')?.textContent ||
+      ""
+    ).trim().toLowerCase();
+
+    const hasShortsHeading = normalizedLabel === "shorts";
+    const hasShelfStructure = Boolean(
+      section.querySelector("ytd-reel-shelf-renderer, ytd-shelf-renderer, grid-shelf-view-model, yt-horizontal-list-renderer")
+    );
+    const hasShortsLinks = Boolean(section.querySelector('a[href*="/shorts"]'));
+
+    if (section.matches("ytd-reel-shelf-renderer")) {
+      return true;
+    }
+
+    if (section.matches("ytd-item-section-renderer")) {
+      return hasShortsHeading && (hasShelfStructure || hasShortsLinks);
+    }
+
+    if (section.matches("ytd-shelf-renderer, grid-shelf-view-model")) {
+      if (hasShortsHeading && hasShortsLinks) {
+        return true;
+      }
+
+      const parentSection = section.closest("ytd-item-section-renderer");
+      const parentLabel = (
+        parentSection?.querySelector("#title")?.textContent ||
+        parentSection?.querySelector("h2")?.textContent ||
+        ""
+      ).trim().toLowerCase();
+
+      return parentLabel === "shorts" && hasShortsLinks;
+    }
+
+    if (section.querySelector("ytd-reel-shelf-renderer")) {
+      return true;
+    }
+
+    return hasShortsHeading && hasShortsLinks;
+  }
+
+  function hideSearchResultShortsSections(mode, setNodeHidden) {
+    const isActive = mode !== MODES.OFF;
+    const isSearchResults = getRoute() === "search-results";
+    const selectors = [
+      "ytd-search ytd-item-section-renderer",
+      "ytd-search ytd-shelf-renderer",
+      "ytd-search ytd-reel-shelf-renderer",
+      "ytd-search grid-shelf-view-model"
+    ];
+
+    const sectionsToToggle = new Map();
+
+    document.querySelectorAll(selectors.join(", ")).forEach((section) => {
+      const target =
+        section.closest("ytd-item-section-renderer") ||
+        section.closest("ytd-shelf-renderer") ||
+        section;
+
+      if (!target) {
+        return;
+      }
+
+      const shouldHide =
+        isActive &&
+        isSearchResults &&
+        isShortsSearchSection(section);
+
+      sectionsToToggle.set(target, shouldHide);
+    });
+
+    sectionsToToggle.forEach((shouldHide, target) => {
+      setNodeHidden(target, shouldHide);
+    });
+  }
+
   initSite({
     id: "youtube",
     css,
-    apply({ mode, root, upsertPlaceholder, clearPlaceholder }) {
+    apply({ mode, root, setNodeHidden, upsertPlaceholder, clearPlaceholder }) {
       root.dataset.msYoutubeRoute = getRoute();
       ensureHomePlaceholder(mode, upsertPlaceholder, clearPlaceholder);
       ensureShortsPlaceholder(mode, upsertPlaceholder, clearPlaceholder);
+      hideSearchResultShortsSections(mode, setNodeHidden);
     }
   });
 })(globalThis);
