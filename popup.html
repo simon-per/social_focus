@@ -15,9 +15,17 @@
             <p class="summary">Quiet utility for social media.</p>
           </div>
           <div class="theme-switch" aria-label="Appearance">
-            <button class="theme-chip" data-theme="auto" type="button">Auto</button>
-            <button class="theme-chip" data-theme="light" type="button">Light</button>
-            <button class="theme-chip" data-theme="dark" type="button">Dark</button>
+            <button class="theme-chip" data-theme="light" type="button" aria-label="Light theme" title="Light theme">
+              <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4.25"></circle>
+                <path d="M12 2.5v2.25M12 19.25v2.25M21.5 12h-2.25M4.75 12H2.5M18.72 5.28l-1.59 1.59M6.87 17.13l-1.59 1.59M18.72 18.72l-1.59-1.59M6.87 6.87L5.28 5.28"></path>
+              </svg>
+            </button>
+            <button class="theme-chip" data-theme="dark" type="button" aria-label="Dark theme" title="Dark theme">
+              <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 14.8A7.8 7.8 0 0 1 9.2 5a8.8 8.8 0 1 0 9.8 9.8Z"></path>
+              </svg>
+            </button>
           </div>
         </div>
       </header>
