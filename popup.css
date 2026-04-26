@@ -142,11 +142,13 @@ button {
   border: 0;
   background: transparent;
   color: var(--chip-ink);
-  border-radius: 999px;
-  padding: 5px 8px;
-  font-size: 9px;
-  font-weight: 600;
-  line-height: 1;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  padding: 0;
   cursor: pointer;
   transition:
     background 120ms ease,
@@ -162,6 +164,21 @@ button {
   background: var(--chip-active);
   color: var(--theme-chip-active-ink);
   box-shadow: inset 0 0 0 1px var(--theme-chip-active-border);
+}
+
+.theme-icon {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-chip[data-theme="dark"] .theme-icon {
+  fill: currentColor;
+  stroke: none;
 }
 
 .mode-list {

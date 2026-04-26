@@ -2,6 +2,7 @@ const MODE_KEY = "mode";
 const THEME_KEY = "theme";
 const MODES = ["off", "shorts", "feed", "search"];
 const THEMES = ["auto", "light", "dark"];
+const systemThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
 const cards = Array.from(document.querySelectorAll("[data-mode]"));
 const themeChips = Array.from(document.querySelectorAll("[data-theme]"));
@@ -22,11 +23,20 @@ function renderActive(mode) {
 
 function renderTheme(theme) {
   const nextTheme = normalizeTheme(theme);
+  const displayedTheme = resolveDisplayedTheme(nextTheme);
   document.documentElement.dataset.themePreference = nextTheme;
 
   for (const chip of themeChips) {
-    chip.classList.toggle("is-active", chip.dataset.theme === nextTheme);
+    chip.classList.toggle("is-active", chip.dataset.theme === displayedTheme);
   }
+}
+
+function resolveDisplayedTheme(theme) {
+  if (theme === "light" || theme === "dark") {
+    return theme;
+  }
+
+  return systemThemeQuery.matches ? "dark" : "light";
 }
 
 async function loadMode() {
@@ -70,6 +80,13 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 
   if (changes[MODE_KEY]) {
     renderActive(normalizeMode(changes[MODE_KEY].newValue));
+  }
+});
+
+systemThemeQuery.addEventListener("change", () => {
+  const currentTheme = normalizeTheme(document.documentElement.dataset.themePreference);
+  if (currentTheme === "auto") {
+    renderTheme(currentTheme);
   }
 });
 
