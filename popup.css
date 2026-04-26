@@ -10,6 +10,11 @@
   --chip: #f0f0f2;
   --chip-active: #111111;
   --chip-ink: #58585f;
+  --theme-switch-bg: rgba(255, 255, 255, 0.72);
+  --theme-chip-hover: rgba(17, 17, 20, 0.04);
+  --theme-chip-active-bg: rgba(255, 255, 255, 0.96);
+  --theme-chip-active-border: rgba(17, 17, 20, 0.08);
+  --theme-chip-active-ink: #44444b;
   --shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
   --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
 }
@@ -26,6 +31,11 @@ html[data-theme-preference="dark"] {
   --chip: #222226;
   --chip-active: #f5f5f7;
   --chip-ink: #b4b4ba;
+  --theme-switch-bg: rgba(255, 255, 255, 0.04);
+  --theme-chip-hover: rgba(255, 255, 255, 0.05);
+  --theme-chip-active-bg: rgba(255, 255, 255, 0.09);
+  --theme-chip-active-border: rgba(255, 255, 255, 0.06);
+  --theme-chip-active-ink: #f0f0f3;
   --shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
   --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
 }
@@ -43,6 +53,11 @@ html[data-theme-preference="dark"] {
     --chip: #222226;
     --chip-active: #f5f5f7;
     --chip-ink: #b4b4ba;
+    --theme-switch-bg: rgba(255, 255, 255, 0.04);
+    --theme-chip-hover: rgba(255, 255, 255, 0.05);
+    --theme-chip-active-bg: rgba(255, 255, 255, 0.09);
+    --theme-chip-active-border: rgba(255, 255, 255, 0.06);
+    --theme-chip-active-ink: #f0f0f3;
     --shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
     --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
   }
@@ -99,8 +114,9 @@ body {
   gap: 2px;
   padding: 2px;
   border-radius: 9px;
-  background: var(--chip);
+  background: var(--theme-switch-bg);
   border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
 }
 
 .theme-chip {
@@ -116,12 +132,22 @@ body {
   height: 24px;
   padding: 0;
   cursor: pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.theme-chip:hover {
+  background: var(--theme-chip-hover);
 }
 
 .theme-chip.is-active {
-  background: var(--panel);
-  color: var(--ink);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  background: var(--theme-chip-active-bg);
+  color: var(--theme-chip-active-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  outline: 1px solid var(--theme-chip-active-border);
 }
 
 .theme-icon {
