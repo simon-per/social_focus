@@ -5,7 +5,6 @@ const THEMES = ["auto", "light", "dark"];
 
 const cards = Array.from(document.querySelectorAll("[data-mode]"));
 const themeChips = Array.from(document.querySelectorAll("[data-theme]"));
-const statusNode = document.getElementById("status");
 
 function normalizeMode(value) {
   return MODES.includes(value) ? value : "off";
@@ -15,36 +14,10 @@ function normalizeTheme(value) {
   return THEMES.includes(value) ? value : "auto";
 }
 
-function labelForMode(mode) {
-  switch (mode) {
-    case "shorts":
-      return "Shorts Only";
-    case "feed":
-      return "Feed Block";
-    case "search":
-      return "Search Only";
-    default:
-      return "Off";
-  }
-}
-
-function labelForTheme(theme) {
-  switch (theme) {
-    case "light":
-      return "Light";
-    case "dark":
-      return "Dark";
-    default:
-      return "Auto";
-  }
-}
-
 function renderActive(mode) {
   for (const card of cards) {
     card.classList.toggle("is-active", card.dataset.mode === mode);
   }
-  const theme = normalizeTheme(document.documentElement.dataset.themePreference);
-  statusNode.textContent = `${labelForMode(mode)} · ${labelForTheme(theme)}`;
 }
 
 function renderTheme(theme) {
@@ -53,8 +26,6 @@ function renderTheme(theme) {
   for (const chip of themeChips) {
     chip.classList.toggle("is-active", chip.dataset.theme === nextTheme);
   }
-  const modeCard = document.querySelector(".mode-card.is-active");
-  renderActive(normalizeMode(modeCard?.dataset.mode));
 }
 
 async function loadMode() {

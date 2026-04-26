@@ -1,50 +1,53 @@
 :root {
   color-scheme: light;
-  --bg: #f4f4f5;
+  --bg: #f3f4f6;
   --panel: #ffffff;
-  --ink: #111114;
-  --muted: #6a6a70;
-  --line: rgba(17, 17, 20, 0.08);
-  --line-strong: rgba(17, 17, 20, 0.14);
+  --panel-alt: #f8f9fb;
+  --ink: #111111;
+  --muted: #6b7280;
+  --line: rgba(17, 17, 17, 0.08);
+  --line-strong: rgba(17, 17, 17, 0.14);
   --active: #111111;
-  --chip: #f0f0f2;
-  --chip-active: #111111;
-  --chip-ink: #58585f;
-  --shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
-  --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+  --active-ink: #ffffff;
+  --chip: #f1f3f5;
+  --chip-active: #ffffff;
+  --chip-ink: #6b7280;
+  --shadow: 0 6px 18px rgba(17, 17, 17, 0.06);
 }
 
 html[data-theme-preference="dark"] {
   color-scheme: dark;
-  --bg: #0f0f10;
-  --panel: #171719;
-  --ink: #f5f5f7;
-  --muted: #9b9ba1;
+  --bg: #0f1115;
+  --panel: #171a20;
+  --panel-alt: #1c2027;
+  --ink: #f3f4f6;
+  --muted: #9ca3af;
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.14);
-  --active: #f5f5f7;
-  --chip: #222226;
-  --chip-active: #f5f5f7;
-  --chip-ink: #b4b4ba;
-  --shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
-  --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  --active: #f3f4f6;
+  --active-ink: #111111;
+  --chip: #20242c;
+  --chip-active: #2a2f39;
+  --chip-ink: #b0b7c3;
+  --shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
 @media (prefers-color-scheme: dark) {
   html:not([data-theme-preference="light"]):not([data-theme-preference="dark"]) {
     color-scheme: dark;
-    --bg: #0f0f10;
-    --panel: #171719;
-    --ink: #f5f5f7;
-    --muted: #9b9ba1;
+    --bg: #0f1115;
+    --panel: #171a20;
+    --panel-alt: #1c2027;
+    --ink: #f3f4f6;
+    --muted: #9ca3af;
     --line: rgba(255, 255, 255, 0.08);
     --line-strong: rgba(255, 255, 255, 0.14);
-    --active: #f5f5f7;
-    --chip: #222226;
-    --chip-active: #f5f5f7;
-    --chip-ink: #b4b4ba;
-    --shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
-    --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    --active: #f3f4f6;
+    --active-ink: #111111;
+    --chip: #20242c;
+    --chip-active: #2a2f39;
+    --chip-ink: #b0b7c3;
+    --shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
   }
 }
 
@@ -52,18 +55,33 @@ html[data-theme-preference="dark"] {
   box-sizing: border-box;
 }
 
+html,
+body {
+  min-width: 248px;
+}
+
+html {
+  background: transparent;
+}
+
 body {
   margin: 0;
-  min-width: 260px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
+  border-radius: 18px;
+  font-family: "Segoe UI Variable Text", "SF Pro Text", "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   color: var(--ink);
   background: var(--bg);
 }
 
+button {
+  font: inherit;
+}
+
 .popup {
-  padding: 10px;
+  padding: 8px;
+  border-radius: 18px;
 }
 
 .hero {
@@ -72,24 +90,27 @@ body {
 
 .hero-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
 
+.title-block {
+  min-width: 0;
+}
+
 .hero h1 {
   margin: 0;
-  font-size: 17px;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  font-weight: 600;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 700;
 }
 
 .summary {
-  margin: 4px 0 0;
-  max-width: 145px;
+  margin: 3px 0 0;
   font-size: 9px;
-  line-height: 1.25;
+  line-height: 1.2;
   color: var(--muted);
 }
 
@@ -98,7 +119,7 @@ body {
   grid-auto-flow: column;
   gap: 2px;
   padding: 2px;
-  border-radius: 9px;
+  border-radius: 999px;
   background: var(--chip);
   border: 1px solid var(--line);
 }
@@ -108,22 +129,27 @@ body {
   border: 0;
   background: transparent;
   color: var(--chip-ink);
-  border-radius: 7px;
-  padding: 3px 6px;
-  font: 600 9px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  letter-spacing: -0.01em;
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
   cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
 }
 
 .theme-chip.is-active {
-  background: var(--panel);
+  background: var(--chip-active);
   color: var(--ink);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .mode-list {
   display: grid;
-  gap: 5px;
+  gap: 6px;
 }
 
 .mode-card {
@@ -132,65 +158,55 @@ body {
   background: var(--panel);
   color: inherit;
   text-align: left;
-  border-radius: 12px;
-  padding: 8px 10px 8px;
+  border-radius: 14px;
+  padding: 10px 38px 10px 10px;
   cursor: pointer;
+  box-shadow: var(--shadow);
   transition:
-    transform 140ms ease,
-    border-color 140ms ease,
-    background 140ms ease,
-    box-shadow 140ms ease,
-    color 140ms ease;
-  box-shadow: var(--card-shadow);
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
 }
 
 .mode-card:hover {
-  transform: translateY(-1px);
   border-color: var(--line-strong);
-  box-shadow: var(--shadow);
+}
+
+.mode-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  transform: translateY(-50%);
 }
 
 .mode-card.is-active {
-  border-color: var(--active);
   background: var(--active);
-  color: var(--bg);
-  box-shadow: var(--shadow);
-}
-
-.mode-card.is-active .mode-copy {
-  color: color-mix(in srgb, var(--bg) 72%, transparent);
+  border-color: var(--active);
+  color: var(--active-ink);
 }
 
 .mode-card.is-active::after {
-  content: "";
-  position: absolute;
-  top: 9px;
-  right: 9px;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--bg);
+  border-color: rgba(255, 255, 255, 0.18);
+  background:
+    radial-gradient(circle, var(--active-ink) 0 38%, transparent 40%);
 }
 
 .mode-name {
   display: block;
   font-size: 12px;
-  font-weight: 600;
+  line-height: 1.1;
+  font-weight: 650;
   letter-spacing: -0.02em;
-  margin-bottom: 2px;
 }
 
-.mode-copy {
-  display: block;
-  font-size: 9px;
-  line-height: 1.25;
-  color: var(--muted);
-}
-
-.status {
-  margin: 8px 2px 0;
-  min-height: 12px;
-  font-size: 9px;
-  letter-spacing: -0.01em;
-  color: var(--muted);
+.theme-chip:focus-visible,
+.mode-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  outline-offset: 1px;
 }
