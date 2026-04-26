@@ -12,6 +12,10 @@
   --chip: #f1f3f5;
   --chip-active: #ffffff;
   --chip-ink: #6b7280;
+  --theme-switch-bg: rgba(255, 255, 255, 0.72);
+  --theme-chip-hover: rgba(17, 17, 20, 0.04);
+  --theme-chip-active-ink: #111111;
+  --theme-chip-active-border: rgba(17, 17, 20, 0.08);
   --shadow: 0 6px 18px rgba(17, 17, 17, 0.06);
 }
 
@@ -29,6 +33,10 @@ html[data-theme-preference="dark"] {
   --chip: #20242c;
   --chip-active: #2a2f39;
   --chip-ink: #b0b7c3;
+  --theme-switch-bg: rgba(255, 255, 255, 0.04);
+  --theme-chip-hover: rgba(255, 255, 255, 0.05);
+  --theme-chip-active-ink: #f0f0f3;
+  --theme-chip-active-border: rgba(255, 255, 255, 0.06);
   --shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
@@ -47,6 +55,10 @@ html[data-theme-preference="dark"] {
     --chip: #20242c;
     --chip-active: #2a2f39;
     --chip-ink: #b0b7c3;
+    --theme-switch-bg: rgba(255, 255, 255, 0.04);
+    --theme-chip-hover: rgba(255, 255, 255, 0.05);
+    --theme-chip-active-ink: #f0f0f3;
+    --theme-chip-active-border: rgba(255, 255, 255, 0.06);
     --shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
   }
 }
@@ -120,8 +132,9 @@ button {
   gap: 2px;
   padding: 2px;
   border-radius: 999px;
-  background: var(--chip);
+  background: var(--theme-switch-bg);
   border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
 }
 
 .theme-chip {
@@ -141,10 +154,14 @@ button {
     border-color 120ms ease;
 }
 
+.theme-chip:hover {
+  background: var(--theme-chip-hover);
+}
+
 .theme-chip.is-active {
   background: var(--chip-active);
-  color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--theme-chip-active-ink);
+  box-shadow: inset 0 0 0 1px var(--theme-chip-active-border);
 }
 
 .mode-list {

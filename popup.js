@@ -23,6 +23,7 @@ function renderActive(mode) {
 function renderTheme(theme) {
   const nextTheme = normalizeTheme(theme);
   document.documentElement.dataset.themePreference = nextTheme;
+
   for (const chip of themeChips) {
     chip.classList.toggle("is-active", chip.dataset.theme === nextTheme);
   }
@@ -62,9 +63,11 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName !== "local") {
     return;
   }
+
   if (changes[THEME_KEY]) {
     renderTheme(normalizeTheme(changes[THEME_KEY].newValue));
   }
+
   if (changes[MODE_KEY]) {
     renderActive(normalizeMode(changes[MODE_KEY].newValue));
   }
